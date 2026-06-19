@@ -28,13 +28,33 @@ public class ComplaintController {
 
     @GetMapping("/{id}")
     public Complaint getComplaintById(@PathVariable Long id) {
-
         for (Complaint complaint : complaints) {
             if (complaint.getId().equals(id)) {
                 return complaint;
             }
         }
-
         return null;
+    }
+
+    @PutMapping("/{id}/status")
+    public Complaint updateStatus(@PathVariable Long id, @RequestParam String status) {
+        for (Complaint complaint : complaints) {
+            if (complaint.getId().equals(id)) {
+                complaint.setStatus(status);
+                return complaint;
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteComplaint(@PathVariable Long id) {
+        for (Complaint complaint : complaints) {
+            if (complaint.getId().equals(id)) {
+                complaints.remove(complaint);
+                return "Complaint Deleted Successfully";
+            }
+        }
+        return "Complaint Not Found";
     }
 }
