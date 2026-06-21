@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 @RequestMapping("/api/complaints")
 public class ComplaintController {
 
@@ -16,41 +17,21 @@ public class ComplaintController {
         this.complaintRepository = complaintRepository;
     }
 
-    @PostMapping
-    public Complaint createComplaint(@RequestBody Complaint complaint) {
-        complaint.setStatus("PENDING");
-        return complaintRepository.save(complaint);
-    }
-
     @GetMapping
     public List<Complaint> getAllComplaints() {
         return complaintRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Complaint getComplaintById(@PathVariable Long id) {
-        return complaintRepository.findById(id).orElse(null);
-    }
-
-    @PutMapping("/{id}/status")
-    public Complaint updateStatus(@PathVariable Long id, @RequestParam String status) {
-        Complaint complaint = complaintRepository.findById(id).orElse(null);
-
-        if (complaint != null) {
-            complaint.setStatus(status);
-            return complaintRepository.save(complaint);
+    @PostMapping
+    public Complaint createComplaint(@RequestBody Complaint complaint) {
+        if (complaint.getStatus() == null || complaint.getStatus().isEmpty()) {
+            complaint.setStatus("PENDING");
         }
-
-        return null;
+        return complaintRepository.save(complaint);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteComplaint(@PathVariable Long id) {
-        if (complaintRepository.existsById(id)) {
-            complaintRepository.deleteById(id);
-            return "Complaint Deleted Successfully";
-        }
-
-        return "Complaint Not Found";
+    public void deleteComplaint(@PathVariable Long id) {
+        complaintRepository.deleteById(id);
     }
 }
