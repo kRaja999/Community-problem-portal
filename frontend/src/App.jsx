@@ -128,11 +128,15 @@ function App() {
         title: form.title,
         description: form.description,
         location: form.location,
+        category: form.category,
+        department: form.department,
       }),
     });
 
     alert(
-        `Request submitted successfully.\nAssigned Department: ${form.department || "General Administration Department"}`
+        `Request submitted successfully.\nAssigned Department: ${
+            form.department || "General Administration Department"
+        }`
     );
 
     setForm({
@@ -206,12 +210,7 @@ function App() {
 
             <form onSubmit={submitComplaint}>
               <label>Service Type</label>
-              <select
-                  name="title"
-                  value={form.title}
-                  onChange={handleChange}
-                  required
-              >
+              <select name="title" value={form.title} onChange={handleChange} required>
                 <option value="">Select Service Type</option>
                 <option value="Road Damage / Potholes">Road Damage / Potholes</option>
                 <option value="Road Maintenance Request">Road Maintenance Request</option>
@@ -241,11 +240,7 @@ function App() {
               <input value={form.category} readOnly placeholder="Auto detected" />
 
               <label>Assigned Department</label>
-              <input
-                  value={form.department}
-                  readOnly
-                  placeholder="Auto assigned department"
-              />
+              <input value={form.department} readOnly placeholder="Auto assigned department" />
 
               <label>Description</label>
               <textarea
@@ -270,19 +265,10 @@ function App() {
               </button>
 
               <label>Upload / Capture Photo</label>
-              <input
-                  type="file"
-                  name="photo"
-                  accept="image/*"
-                  onChange={handleChange}
-              />
+              <input type="file" name="photo" accept="image/*" onChange={handleChange} />
 
               {preview && (
-                  <img
-                      src={preview}
-                      className="preview"
-                      alt="Request preview"
-                  />
+                  <img src={preview} className="preview" alt="Request preview" />
               )}
 
               <button type="submit">Submit Request</button>
@@ -313,6 +299,14 @@ function App() {
 
                     <p>{item.description}</p>
 
+                    <p>
+                      <strong>Category:</strong> {item.category || "Not assigned"}
+                    </p>
+
+                    <p>
+                      <strong>Department:</strong> {item.department || "Not assigned"}
+                    </p>
+
                     <strong>Location:</strong> {item.location}
                     <br />
 
@@ -330,10 +324,7 @@ function App() {
                           Mark Resolved
                         </button>
 
-                        <button
-                            className="delete"
-                            onClick={() => deleteComplaint(item.id)}
-                        >
+                        <button className="delete" onClick={() => deleteComplaint(item.id)}>
                           Delete
                         </button>
                       </div>
